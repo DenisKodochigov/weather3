@@ -14,9 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.weather3.R
-import com.example.weather3.ui.theme.dialogButtonStyle
-import com.example.weather3.ui.theme.dialogButtonStyleLight
 import javax.inject.Inject
 
 class Internet @Inject constructor(val context: Context) {
@@ -31,14 +28,13 @@ class Internet @Inject constructor(val context: Context) {
 }
 @Composable
 fun WarningNotInternet(titleId: Int, textId: Int){
-    val style = if (!isSystemInDarkTheme()) dialogButtonStyle else dialogButtonStyleLight
     val openAlertDialog = remember { mutableStateOf(true) }
     if(openAlertDialog.value) {
         AlertDialog(
             title = { Text(text = stringResource(id = titleId)) },
             text = { Text(text = stringResource(id = textId)) },
             onDismissRequest = { openAlertDialog.value = false },
-            confirmButton = { Text(text = "OK", style = style,
+            confirmButton = { Text(text = "OK",
                 modifier = Modifier.padding(horizontal = 18.dp).clickable { openAlertDialog.value = false })  }
         )
     }

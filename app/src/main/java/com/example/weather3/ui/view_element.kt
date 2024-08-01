@@ -32,7 +32,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.weather3.entity.TypeKeyboard
-import com.example.weather3.ui.theme.fieldStyle
 
 @Composable
 fun TextFieldWithIcon(
@@ -63,7 +62,7 @@ fun TextFieldWithIcon(
                 color = colorScheme.surfaceVariant,
                 shape = MaterialTheme.shapes.large
             ),
-        textStyle = fieldStyle.copy(textAlign = textAlign),
+        textStyle = MaterialTheme.typography.bodyMedium.copy(textAlign = textAlign),
         decorationBox = {
             Row( verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)){

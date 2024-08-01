@@ -6,11 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.weather3.ui.screens.main.MainScreen
-import com.example.weather3.ui.theme.ThemeApp
+import com.example.weather3.ui.theme.AppTheme
 
 @Composable
 fun StartApp() {
-    ThemeApp {
+    AppTheme {
         Scaffold(
             modifier = Modifier,
             content = { innerPadding -> MainScreen(modifier = Modifier.padding(innerPadding)) }

@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.Text
@@ -30,8 +31,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key.Companion.W
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -39,7 +38,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.weather3.R
-import com.example.weather3.domain.lg
 import com.example.weather3.domain.rus
 import com.example.weather3.entity.TypeKeyboard
 import com.example.weather3.entity.WeatherDay
@@ -49,14 +47,7 @@ import com.example.weather3.entity.weatherCod
 import com.example.weather3.entity.weatherCodIcon
 import com.example.weather3.service_location.WarningNotInternet
 import com.example.weather3.ui.TextFieldWithIcon
-import com.example.weather3.ui.theme.feelsStyle
-import com.example.weather3.ui.theme.listTempStyle
-import com.example.weather3.ui.theme.listTimeStyle
-import com.example.weather3.ui.theme.locationStyle
 import com.example.weather3.ui.theme.shape1
-import com.example.weather3.ui.theme.temperatureStyle1
-import com.example.weather3.ui.theme.titleStyle
-import com.example.weather3.ui.theme.weatherStyle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -94,7 +85,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         modifier = Modifier
             .height(95.dp)
             .fillMaxWidth()
-            .background(color = colorScheme.primaryContainer)
+            .background(color = colorScheme.tertiaryContainer)
     ) {
         val city = remember { mutableStateOf("") }
         TextFieldWithIcon(
@@ -114,7 +105,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = colorScheme.primaryContainer)
+                .background(color = colorScheme.tertiaryContainer)
         ) {
             Location(uiState)
             CurrentWeather(uiState = uiState)
@@ -131,7 +122,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(start = 18.dp, end = 8.dp)
     ) {
-        Text(text = uiState.location.value.city, style = locationStyle)
+        Text(text = uiState.location.value.city, style = MaterialTheme.typography.headlineMedium)
     }
 }
 
@@ -146,15 +137,14 @@ fun MainScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(0.dp))
         Text(
             text = (uiState.weathers?.currentTemp() + "\u00B0"),
-            style = temperatureStyle1,
+            style = MaterialTheme.typography.displayMedium,
             modifier = Modifier.padding(top = 12.dp),
         )
-        val appTemp =
-            (uiState.weathers?.currentApparentTemp() + "\u00B0")
+        val appTemp = (uiState.weathers?.currentApparentTemp() + "\u00B0")
         Text(
             text = stringResource(id = R.string.feels_like) + " " + appTemp,
-            style = feelsStyle,
-            modifier = Modifier.padding(start = 4.dp, top = 52.dp)
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(start = 4.dp, top = 36.dp)
         )
         Spacer(modifier = Modifier.weight(1f))
         IconWeather(uiState.weathers?.currentWeatherCod() ?: 22 ,
@@ -193,7 +183,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
             .clickable { onSelectDay() }
             .fillMaxWidth()
             .padding(start = 8.dp, end = 8.dp, top = 4.dp)
-            .background(color = colorScheme.tertiaryContainer, shape = shapes.medium)
+            .background(color = colorScheme.primaryContainer, shape = shapes.medium)
     ){
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -229,9 +219,11 @@ fun MainScreen(modifier: Modifier = Modifier) {
                                     stringResource(id = date.month.rus) + " " + date.dayOfMonth
         }
         val textWeatherCod = weatherCod[weatherDay.middleCod]?.let { stringResource(id = it) } ?: ""
-        Text(text = date, style = feelsStyle, modifier = Modifier.padding(horizontal = 0.dp))
-        Text(text = textWeatherCod, style = weatherStyle,
+        Text(text = date, modifier = Modifier.padding(horizontal = 0.dp),
+                style = MaterialTheme.typography.titleMedium,)
+        Text(text = textWeatherCod,
             modifier = Modifier.padding( top = 8.dp),
+            style = MaterialTheme.typography.bodyMedium,
             softWrap = false,
             overflow = TextOverflow.Ellipsis)
     }
@@ -244,14 +236,17 @@ fun MainScreen(modifier: Modifier = Modifier) {
         Column(modifier = Modifier
             .padding(end = 8.dp)
             .width(50.dp)){
-            Text(text = weatherDay.maxTemp.toString() + "\u00B0", style = feelsStyle,
+            Text(text = weatherDay.maxTemp.toString() + "\u00B0",
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(vertical = vertPad))
-            Text(text = weatherDay.minTemp.toString() + "\u00B0", style = feelsStyle,
+            Text(text = weatherDay.minTemp.toString() + "\u00B0",
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(vertical = vertPad))
-            Text(text = weatherDay.middleRainfall.toString() + "%", style = feelsStyle,
+            Text(text = weatherDay.middleRainfall.toString() + "%",
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(vertical = vertPad))
         }
-        VerticalDivider( thickness = 1.dp, color = Color.White, modifier = Modifier.height(80.dp))
+        VerticalDivider( thickness = 1.dp,  modifier = Modifier.height(80.dp)) //color = Color.White,
     }
 }
 
@@ -265,14 +260,16 @@ fun MainScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable fun WeatherToDay(weatherDay: WeatherDay){
-    Box {
-        val offsetVertText = 86.dp
-        val offsetHotText = 30.dp
-        val horizontalDp = 20.dp
+    val offsetVertText = 86.dp
+    val offsetHotText = 6.dp
+    val horizontalDp = 20.dp
+    Box (
+        modifier = Modifier.padding(start = horizontalDp, end = horizontalDp),)
+    {
         LazyRow(
             modifier = Modifier
-                .padding(start = horizontalDp, bottom = 8.dp, end = horizontalDp)
-                .background(color = colorScheme.tertiary, shape = shape1),
+                .background(color = colorScheme.secondaryContainer, shape = shape1)
+                .padding(horizontal = 8.dp),
             state = rememberLazyListState(),
             contentPadding = PaddingValues(0.dp),
             horizontalArrangement = Arrangement.Center,
@@ -281,10 +278,11 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 WeatherDayTemperatureContent( weatherDay.weatherHour[hour] )
             }
         }
-        Text(text = stringResource(id = R.string.title_temp), style = titleStyle,
+        Text(text = stringResource(id = R.string.title_temp), style  = MaterialTheme.typography.labelMedium,
             modifier = Modifier.padding(start = offsetHotText, top = offsetVertText, bottom = 8.dp))
-        Text(text = stringResource(id = R.string.title_precipitation), style = titleStyle,
-            modifier = Modifier.padding(start = offsetHotText, top = offsetVertText + 48.dp, bottom = 8.dp),)
+        Text(text = stringResource(id = R.string.title_precipitation),
+            style  = MaterialTheme.typography.labelMedium,
+            modifier = Modifier.padding(start = offsetHotText, top = offsetVertText + 44.dp, bottom = 8.dp),)
     }
 }
 @Composable fun WeatherDayTemperatureContent(weatherHour: WeatherHour){
@@ -295,20 +293,19 @@ fun MainScreen(modifier: Modifier = Modifier) {
         val now = weatherHour.time.toString() == ( LocalTime.now().hour.toString() + ":00")
         Text(
             text = if (now) stringResource(id = R.string.now) else weatherHour.time.toString(),
-            softWrap = false,
-            style = listTimeStyle,
+            softWrap = false, style  = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(top = 16.dp)
         )
         Spacer(modifier = Modifier.height(12.dp))
         IconWeather(weatherHour.weatherCode, Modifier.size(32.dp))
         Text(
             text = (weatherHour.temperature.toInt().toString() + "\u00B0"),
-            style = listTempStyle,
+            style  = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(top = 24.dp, bottom = 0.dp),
         )
         Text(
             text = ("${weatherHour.precipitation}%"),
-            style = listTempStyle,
+            style  = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(top = 20.dp, bottom = 16.dp),
         )
     }

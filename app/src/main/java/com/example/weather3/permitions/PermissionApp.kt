@@ -11,6 +11,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,8 +22,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import com.example.weather3.R
-import com.example.weather3.ui.theme.dialogButtonStyle
-import com.example.weather3.ui.theme.dialogButtonStyleLight
+//import com.example.weather3.ui.theme.dialogButtonStyle
+//import com.example.weather3.ui.theme.dialogButtonStyleLight
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -63,14 +64,13 @@ fun RequestPermissions(context: Context,permissions: List<String>): Boolean{
 }
 
 @Composable fun DialogRequestPermission(onOk:()->Unit, onCancel:()->Unit){
-    val style = if (!isSystemInDarkTheme()) dialogButtonStyle else dialogButtonStyleLight
     AlertDialog(
         title = { Text(text = stringResource(id = R.string.title_request_permission)) },
         text = { Text(text = stringResource(id = R.string.text_request_permission)) },
         onDismissRequest = onCancel,
-        confirmButton = { Text(text = "OK", style = style,
+        confirmButton = { Text(text = "OK", style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(horizontal = 24.dp).clickable { onOk() }) },
-        dismissButton = { Text(text = "Cancel", style = style,
+        dismissButton = { Text(text = "Cancel", style =  MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(horizontal = 24.dp).clickable { onCancel() })  },
     )
 }
