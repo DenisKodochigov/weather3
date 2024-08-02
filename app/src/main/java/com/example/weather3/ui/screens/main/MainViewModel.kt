@@ -33,12 +33,16 @@ class MainViewModel @Inject constructor(
     fun getLocation(){
         if (internet.isOnline()) {
             viewModelScope.launch(Dispatchers.IO) {
-                kotlin.runCatching { dataRepository.getLocation() }.fold(
+                kotlin.runCatching {
+                    setLoadLocation(true)
+                    dataRepository.getLocation()
+                }.fold(
                     onSuccess = {
                         it?.let {
                             getWeather(it)
                             _mainScreenState.update { currentState ->
-                                currentState.copy(location = mutableStateOf(it))
+                                currentState.copy(location = mutableStateOf(it),
+                                    loadLocation = mutableStateOf(false))
                             }
                         }
                     },
@@ -47,12 +51,25 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+    fun setLoadLocation(value: Boolean) {
+        _mainScreenState.update { currentState ->
+            currentState.copy(loadLocation = mutableStateOf(value))
+        }
+    }
+    private fun setLoadWeather(value: Boolean) {
+        _mainScreenState.update { currentState ->
+            currentState.copy(loadWeather = mutableStateOf(value))
+        }
+    }
     private fun getWeather(locApp: LocApp){
         if (internet.isOnline()) {
             viewModelScope.launch(Dispatchers.IO) {
-                kotlin.runCatching { dataRepository.getWeathers(locApp) }.fold(
+                kotlin.runCatching {
+                    setLoadWeather(true)
+                    dataRepository.getWeathers(locApp) }.fold(
                     onSuccess = {
-                        _mainScreenState.update { currentState -> currentState.copy( weathers = it ) } },
+                        _mainScreenState.update { currentState ->
+                            currentState.copy( weathers = it, loadWeather = mutableStateOf(false) ) } },
                     onFailure = { errorApp.errorApi(it.message!!) }
                 )
             }
@@ -61,12 +78,16 @@ class MainViewModel @Inject constructor(
     private fun onEnterCity(city: String){
         if (internet.isOnline()) {
             viewModelScope.launch(Dispatchers.IO) {
-                kotlin.runCatching { dataRepository.getLocationFromAddress(city) }.fold(
+                kotlin.runCatching {
+                    setLoadLocation(true)
+                    dataRepository.getLocationFromAddress(city) }.fold(
                     onSuccess = {
                         it?.let {
                             getWeather(it)
                             _mainScreenState.update { currentState ->
-                                currentState.copy(location = mutableStateOf(it))
+                                currentState.copy(
+                                    location = mutableStateOf(it),
+                                    loadLocation = mutableStateOf(false))
                             }
                         }
                     },

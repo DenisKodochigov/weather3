@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
@@ -33,11 +34,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.weather3.R
+import com.example.weather3.domain.lg
 import com.example.weather3.domain.rus
 import com.example.weather3.entity.TypeKeyboard
 import com.example.weather3.entity.WeatherDay
@@ -71,10 +74,23 @@ fun MainScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable fun ScreenLayout(uiState: MainScreenState, modifier: Modifier = Modifier) {
-    Column(modifier = modifier.fillMaxSize()) {
-        SearchCity(uiState)
-        WeatherCap(uiState)
-        Weather(uiState)
+    Box(modifier = modifier.fillMaxSize()){
+        Column(modifier = Modifier.fillMaxSize()) {
+            SearchCity(uiState)
+            WeatherCap(uiState)
+            Weather(uiState)
+        }
+        if (uiState.loadLocation.value || uiState.loadWeather.value){
+            val color = if (uiState.loadLocation.value && !uiState.loadWeather.value)
+                colorScheme.secondary
+            else colorScheme.tertiary
+
+            CircularProgressIndicator(
+                modifier = Modifier.width(120.dp).align(alignment = Alignment.Center),
+                color = color,
+                trackColor = colorScheme.surfaceVariant,
+            )
+        }
     }
 }
 

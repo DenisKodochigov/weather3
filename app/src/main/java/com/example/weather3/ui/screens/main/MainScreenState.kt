@@ -10,6 +10,8 @@ import javax.inject.Singleton
 @Singleton
 data class MainScreenState (
     val location: MutableState<LocApp> = mutableStateOf(LocApp()),
+    val loadLocation: MutableState<Boolean> = mutableStateOf(false),
+    val loadWeather: MutableState<Boolean> = mutableStateOf(false),
     val weathers: Weathers? = null,
 
     @Stable var getWeather: () -> Unit = {},

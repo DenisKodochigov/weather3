@@ -95,6 +95,6 @@ fun checkPermission(context: Context): Boolean{
 }
 val permissions1 = listOf(
     ACCESS_NETWORK_STATE,
-    ACCESS_COARSE_LOCATION,
     ACCESS_FINE_LOCATION,
+    ACCESS_COARSE_LOCATION,
 )
